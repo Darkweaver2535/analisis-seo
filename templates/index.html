@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluador SEO - Analiza tu página web</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-logo">
+                <img src="{{ url_for('static', filename='images/emi_logo.png') }}" alt="EMI Logo" class="logo">
+            </div>
+            <h1><i class="fas fa-search"></i> Evaluador SEO</h1>
+            <p class="subtitle">Analiza el SEO de tu página web de forma gratuita</p>
+        </header>
+
+        <form method="POST" class="seo-form">
+            <div class="form-group">
+                <label for="url"><i class="fas fa-link"></i> URL:</label>
+                <input type="url" id="url" name="url" placeholder="https://ejemplo.com" required>
+                <button type="submit"><i class="fas fa-chart-line"></i> Evaluar SEO</button>
+            </div>
+        </form>
+
+        <div class="seo-guide">
+            <h2><i class="fas fa-book"></i> Guía de Evaluación SEO</h2>
+            <p>Nuestro evaluador analiza tu página web basándose en las mejores prácticas de SEO establecidas por Google y expertos en marketing digital:</p>
+            
+            <div class="guide-grid">
+                <div class="guide-item">
+                    <h3><i class="fas fa-heading"></i> Título de la página (15 puntos)</h3>
+                    <p>El título debe tener entre 30-60 caracteres, incluir palabras clave principales y ser descriptivo para aparecer correctamente en los resultados de búsqueda.</p>
+                </div>
+                
+                <div class="guide-item">
+                    <h3><i class="fas fa-file-alt"></i> Meta descripción (10 puntos)</h3>
+                    <p>Debe tener 150-160 caracteres y ser atractiva para incentivar clics desde los resultados de búsqueda de Google.</p>
+                </div>
+                
+                <div class="guide-item">
+                    <h3><i class="fas fa-header"></i> Etiqueta H1 (12 puntos)</h3>
+                    <p>Cada página debe tener exactamente una etiqueta H1 que contenga la palabra clave principal y describa el contenido.</p>
+                </div>
+                
+                <div class="guide-item">
+                    <h3><i class="fas fa-sitemap"></i> Enlaces internos (10 puntos)</h3>
+                    <p>Los enlaces hacia otras páginas de tu sitio distribuyen autoridad y mejoran la experiencia de navegación.</p>
+                </div>
+                
+                <div class="guide-item">
+                    <h3><i class="fas fa-shield-alt"></i> Certificado SSL (10 puntos)</h3>
+                    <p>HTTPS es obligatorio para la seguridad y es un factor de ranking confirmado por Google.</p>
+                </div>
+                
+                <div class="guide-item">
+                    <h3><i class="fas fa-mobile-alt"></i> Optimización móvil (12 puntos)</h3>
+                    <p>Google usa indexación mobile-first, por lo que la optimización móvil es esencial.</p>
+                </div>
+            </div>
+
+            <div class="best-practices">
+                <h3><i class="fas fa-check-circle"></i> Mejores Prácticas SEO</h3>
+                <ul>
+                    <li><strong>Contenido de calidad:</strong> <i class="fas fa-pen-fancy"></i> Crea contenido original, útil y relevante para tu audiencia</li>
+                    <li><strong>Palabras clave:</strong> <i class="fas fa-key"></i> Investiga e incluye palabras clave relevantes de forma natural</li>
+                    <li><strong>Velocidad de carga:</strong> <i class="fas fa-tachometer-alt"></i> Optimiza imágenes y código para cargar en menos de 3 segundos</li>
+                    <li><strong>Experiencia del usuario:</strong> <i class="fas fa-user-friends"></i> Facilita la navegación y mejora la usabilidad</li>
+                    <li><strong>Estructura clara:</strong> <i class="fas fa-layer-group"></i> Usa encabezados (H1, H2, H3) para organizar el contenido</li>
+                </ul>
+            </div>
+
+            <div class="resources">
+                <h3><i class="fas fa-external-link-alt"></i> Recursos Adicionales</h3>
+                <ul>
+                    <li><a href="https://developers.google.com/search/docs" target="_blank"><i class="fab fa-google"></i> Guía oficial de Google Search</a></li>
+                    <li><a href="https://moz.com/beginners-guide-to-seo" target="_blank"><i class="fas fa-graduation-cap"></i> Guía para principiantes de Moz</a></li>
+                    <li><a href="https://search.google.com/search-console" target="_blank"><i class="fas fa-chart-bar"></i> Google Search Console</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

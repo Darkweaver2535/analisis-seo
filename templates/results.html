@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultados SEO - {{ url }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        {% if results.error %}
+            <div class="error">
+                <div class="header-logo">
+                    <img src="{{ url_for('static', filename='images/emi_logo.png') }}" alt="EMI Logo" class="logo">
+                </div>
+                <h2><i class="fas fa-exclamation-triangle"></i> Error en el análisis</h2>
+                <p>{{ results.error }}</p>
+                <a href="{{ url_for('index') }}" class="btn"><i class="fas fa-redo"></i> Intentar otra URL</a>
+            </div>
+        {% else %}
+            <header class="results-header">
+                <div class="header-logo">
+                    <img src="{{ url_for('static', filename='images/emi_logo.png') }}" alt="EMI Logo" class="logo">
+                </div>
+                <h1><i class="fas fa-chart-pie"></i> Resultados del Análisis SEO</h1>
+                <p class="analyzed-url">URL analizada: <strong>{{ results.url }}</strong></p>
+                <div class="overall-score">
+                    <div class="score-circle">
+                        <span class="score-number">{{ results.overall_score }}%</span>
+                    </div>
+                    <p>Puntuación General SEO</p>
+                    <p class="score-details">{{ results.earned_points }}/{{ results.total_points }} puntos</p>
+                </div>
+            </header>
+
+            <div class="results-grid">
+                {% for check_name, check_result in results.checks.items() %}
+                    <div class="result-card {{ 'passed' if check_result.passed else 'failed' }}">
+                        <div class="result-header">
+                            <h3>
+                                {% if check_result.passed %}
+                                    <i class="fas fa-check-circle text-success"></i>
+                                {% else %}
+                                    <i class="fas fa-times-circle text-danger"></i>
+                                {% endif %}
+                                
+                                {% set check_icons = {
+                                    'title': 'fas fa-heading',
+                                    'meta_description': 'fas fa-file-alt',
+                                    'h1_tag': 'fas fa-header',
+                                    'heading_structure': 'fas fa-layer-group',
+                                    'images_alt': 'fas fa-image',
+                                    'internal_links': 'fas fa-sitemap',
+                                    'external_links': 'fas fa-external-link-alt',
+                                    'https_ssl': 'fas fa-shield-alt',
+                                    'mobile_viewport': 'fas fa-mobile-alt',
+                                    'page_speed': 'fas fa-tachometer-alt'
+                                } %}
+                                
+                                {% set names = {
+                                    'title': 'Título de la página',
+                                    'meta_description': 'Meta descripción',
+                                    'h1_tag': 'Etiqueta H1',
+                                    'heading_structure': 'Estructura de encabezados',
+                                    'images_alt': 'Texto alternativo en imágenes',
+                                    'internal_links': 'Enlaces internos',
+                                    'external_links': 'Enlaces externos',
+                                    'https_ssl': 'Certificado SSL (HTTPS)',
+                                    'mobile_viewport': 'Optimización móvil',
+                                    'page_speed': 'Velocidad de carga'
+                                } %}
+                                
+                                <i class="{{ check_icons[check_name] }}"></i>
+                                {{ names[check_name] if names[check_name] else check_name.replace('_', ' ').title() }}
+                            </h3>
+                            <span class="score">{{ check_result.score }}%</span>
+                        </div>
+                        
+                        <p class="result-message">{{ check_result.message }}</p>
+                        <p class="result-details">{{ check_result.details }}</p>
+                        
+                        <div class="guideline">
+                            <strong><i class="fas fa-lightbulb"></i> Guía:</strong>
+                            {% set guideline = {
+                                'title': 'El título debe tener 30-60 caracteres e incluir palabras clave principales',
+                                'meta_description': 'La meta descripción debe tener 150-160 caracteres y ser atractiva',
+                                'h1_tag': 'Usa exactamente una etiqueta H1 por página con la palabra clave principal',
+                                'heading_structure': 'Organiza el contenido con H1, H2, H3 en orden jerárquico',
+                                'images_alt': 'Todas las imágenes deben tener texto alternativo descriptivo',
+                                'internal_links': 'Incluye enlaces hacia otras páginas relevantes de tu sitio',
+                                'external_links': 'Enlaces hacia fuentes confiables mejoran la credibilidad',
+                                'https_ssl': 'HTTPS es obligatorio para seguridad y SEO',
+                                'mobile_viewport': 'El meta viewport es esencial para dispositivos móviles',
+                                'page_speed': 'La velocidad de carga debe ser menor a 3 segundos'
+                            } %}
+                            <p>{{ guideline[check_name] }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="recommendations">
+                <h2><i class="fas fa-rocket"></i> Recomendaciones de Mejora</h2>
+                {% set failed_checks = [] %}
+                {% for check_name, check_result in results.checks.items() %}
+                    {% if not check_result.passed %}
+                        {% set _ = failed_checks.append(check_name) %}
+                    {% endif %}
+                {% endfor %}
+
+                {% if failed_checks|length == 0 %}
+                    <p class="success"><i class="fas fa-trophy"></i> ¡Excelente! Tu página cumple con todos los criterios SEO analizados.</p>
+                {% else %}
+                    <p>Para mejorar tu SEO, enfócate en estos aspectos:</p>
+                    <ul class="recommendations-list">
+                        {% for check_name in failed_checks %}
+                            <li>
+                                <i class="fas fa-arrow-right"></i>
+                                <strong>{{ check_name.replace('_', ' ').title() }}:</strong>
+                                {{ results.checks[check_name].details }}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+
+            <div class="actions">
+                <a href="{{ url_for('index') }}" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Evaluar otra página
+                </a>
+                <button onclick="window.print()" class="btn btn-secondary">
+                    <i class="fas fa-print"></i> Imprimir informe
+                </button>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>
